@@ -3,7 +3,7 @@ import React from "react";
 function Adventure() {
   return (
     <div>
-      <h1>Adventure</h1>
+      <h1 className='text-center text-3xl font-bold'>Adventure</h1>
     </div>
   );
 }
