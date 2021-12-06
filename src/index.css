@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer components{
+    table {
+        @apply text-center mx-auto w-full p-3
+    }
+    
+    table tr  td{
+        @apply p-3 max-w-sm
+    }
+    
     .background-image {
         @apply bg-hero-pattern m-0 bg-gray-800 text-green-500;
     }

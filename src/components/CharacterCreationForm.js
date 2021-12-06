@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import { CharacterContext } from "../contexts/CharacterContext";
 
 function CharacterCreationForm() {
   const { character, setCharacter } = useContext(CharacterContext);
+  const history = useNavigate();
 
   const validationSchema = yup.object().shape({
     username: yup
@@ -28,12 +30,26 @@ function CharacterCreationForm() {
           race: "human",
           gender: "male",
           classes: "fighter",
+          hp: 0,
+          maxHp: 0,
+          lvl: 1,
+          abilities: {
+            strength: 1,
+            dexterity: 1,
+            constitution: 1,
+            intelligence: 1,
+            wisdom: 1,
+            charisma: 1,
+          },
+          availableAbilityScores: 5,
+          earnedExperience: 0,
         }}
         validationSchema={validationSchema}
         onSubmit={(data, { setSubmitting }) => {
           setSubmitting(true);
           console.log(data);
           setCharacter(data);
+          history("/character");
           setSubmitting(false);
         }}>
         {({ values, isSubmitting, errors, touched }) => (
