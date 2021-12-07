@@ -4,11 +4,14 @@
 
 @layer components{
     table {
-        @apply text-center mx-auto w-full p-3
+        @apply text-center mx-auto w-full p-3 my-4;
+    }
+    table th {
+        @apply text-xl;
     }
     
-    table tr  td{
-        @apply p-3 max-w-sm
+    table tr td{
+        @apply p-3 max-w-sm;
     }
     
     .background-image {

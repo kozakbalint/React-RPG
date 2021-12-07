@@ -43,6 +43,7 @@ function CharacterCreationForm() {
           },
           availableAbilityScores: 5,
           earnedExperience: 0,
+          experienceToNextLvl: 1000,
         }}
         validationSchema={validationSchema}
         onSubmit={(data, { setSubmitting }) => {
