@@ -13,6 +13,14 @@
     table tr td{
         @apply p-3 max-w-sm;
     }
+
+    .playerLog {
+        @apply text-left text-green-500
+    }
+
+    .enemyLog {
+        @apply text-right text-red-500
+    }
     
     .background-image {
         @apply bg-hero-pattern m-0 bg-gray-800 text-green-500;

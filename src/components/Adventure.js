@@ -17,32 +17,57 @@ function Adventure() {
   useEffect(async () => {
     if (initialMount.current) {
       initialMount.current = false;
+      initCombat();
       generateEnemy();
     } else {
       if (character.hp <= 0 || enemy.hp <= 0) {
         if (character.hp > 0) {
-          setCombat({
+          setCombat((currentCombat) => ({
+            ...currentCombat,
             earnedXp: Math.floor(Math.random() * enemy.lvl * 1000),
-          });
+          }));
         } else {
-          setCombat({
+          setCombat((currentCombat) => ({
+            ...currentCombat,
             earnedXp: 0,
-          });
+          }));
         }
         history("/combatsummary");
       } else {
-        await delay(500);
+        let enemyDmg = calcDmg(false);
+        let playerDmg = calcDmg(true);
+        await delay(250);
         if (playersTurn) {
           setPlayersTurn(!playersTurn);
+          setCombat((currentCombat) => ({
+            ...currentCombat,
+            log: [
+              ...currentCombat.log,
+              {
+                isPalyer: true,
+                msg: character.username + " " + playerDmg + "-at sebbzett.",
+              },
+            ],
+          }));
           setEnemy((currentEnemy) => ({
             ...currentEnemy,
-            hp: currentEnemy.hp - calcDmg(),
+            hp: currentEnemy.hp - playerDmg,
           }));
         } else {
           setPlayersTurn(!playersTurn);
+          setCombat((currentCombat) => ({
+            ...currentCombat,
+            log: [
+              ...currentCombat.log,
+              {
+                isPalyer: false,
+                msg: enemy.name + " " + enemyDmg + "-at sebbzett.",
+              },
+            ],
+          }));
           setCharacter((currentCharacter) => ({
             ...currentCharacter,
-            hp: currentCharacter.hp - enemy.damage,
+            hp: currentCharacter.hp - enemyDmg,
           }));
         }
       }
@@ -51,40 +76,77 @@ function Adventure() {
 
   const generateEnemy = () => {
     let firstNames = ["Rafkós", "Trükkös", "Kardos", "Boxos"];
-    let lastNames = ["Cigány"];
+    let lastNames = ["Cigány", "Zsidó", "Néger", "Román"];
     let lvl = Math.floor(Math.random() * character.lvl + 1);
-    let damage = Math.floor(Math.random() * character.lvl * 10 * lvl);
     let maxHp = Math.floor(Math.random() * lvl * 100);
 
     setEnemy({
-      name: firstNames[0] + " " + lastNames[0],
+      name:
+        firstNames[Math.floor(Math.random() * firstNames.length)] +
+        " " +
+        lastNames[Math.floor(Math.random() * lastNames.length)],
       lvl: lvl,
-      damage: damage,
       maxHp: maxHp,
       hp: maxHp,
-      itsTurn: Math.floor(Math.random()) === 1 ? true : false,
     });
   };
 
-  const calcDmg = () => {
-    return character.abilities.strength * character.lvl;
+  const calcDmg = (isPalyer) => {
+    return isPalyer
+      ? Math.floor(Math.random() * character.abilities.strength * character.lvl)
+      : Math.floor(Math.random() * enemy.lvl * character.lvl * 10);
   };
 
-  // const calcDodge = () => {
-  //   return character.ablilities.dexterity * 0.1;
-  // }
+  const initCombat = () => {
+    setCombat({
+      earnedXp: 0,
+      log: [],
+    });
+  };
 
   return (
-    <div className='text-center'>
-      <h1 className='text-3xl font-bold'>Adventure</h1>
-
-      <div>
-        {character.hp} / {character.maxHp}
-      </div>
-      <pre>
-        {JSON.stringify(character, null, 2)}
-        {JSON.stringify(enemy, null, 2)}
-      </pre>
+    <div>
+      <h1 className=' text-center text-3xl font-bold'>Adventure</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Character Info:</th>
+            <th>Combat Log:</th>
+            <th>Enemy Info:</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div>Name: {character.username}</div>
+              <div>Lvl: {character.lvl}</div>
+              <div>
+                HP: {character.hp}/{character.maxHp}
+              </div>
+            </td>
+            <td>
+              <div>
+                {combat.log.map((data, i) => (
+                  <div key={i}>
+                    {data.isPalyer ? (
+                      <div className='playerLog'>{data.msg}</div>
+                    ) : (
+                      <div className='enemyLog'>{data.msg}</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </td>
+            <td>
+              <div>Name: {enemy.name}</div>
+              <div>Lvl: {enemy.lvl}</div>
+              <div>
+                HP: {enemy.hp}/{enemy.maxHp}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }

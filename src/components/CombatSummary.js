@@ -10,27 +10,57 @@ function CombatSummary() {
   const { combat, setCombat } = useContext(CombatContext);
   const history = useNavigate();
   return (
-    <div className='text-center'>
-      <h1 className='text-3xl font-bold'>Combat Summary</h1>
-      <p>
-        Character HP: {character.hp} / {character.maxHp}
-      </p>
-      <p>
-        Enemy HP: {enemy.hp} / {enemy.maxHp}
-      </p>
-      <p>Earned XP: {combat.earnedXp}</p>
-      <button
-        className='button'
-        onClick={() => {
-          setCharacter((currentCharacter) => ({
-            ...currentCharacter,
-            earnedExperience:
-              currentCharacter.earnedExperience + combat.earnedXp,
-          }));
-          history("/character");
-        }}>
-        Continue
-      </button>
+    <div className=''>
+      <h1 className='text-3xl font-bold text-center'>Combat Summary</h1>
+      <table className='w-96 mx-auto'>
+        <thead>
+          <tr>
+            <th>{character.username}:</th>
+            <th>{enemy.name}:</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              HP: {character.hp}/{character.maxHp}
+            </td>
+            <td>
+              HP: {enemy.hp}/{enemy.maxHp}
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={2}>Earned XP: {combat.earnedXp}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <button
+                className='button'
+                onClick={() => {
+                  setCharacter((currentCharacter) => ({
+                    ...currentCharacter,
+                    earnedExperience:
+                      currentCharacter.earnedExperience + combat.earnedXp,
+                  }));
+                  history("/character");
+                }}>
+                Continue
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div className='w-96 mx-auto'>
+        <h2 className='text-xl text-left font-bold m-5'>Combat Log:</h2>
+        {combat.log.map((data, i) => (
+          <div key={i}>
+            {data.isPalyer ? (
+              <div className='playerLog'>{data.msg}</div>
+            ) : (
+              <div className='enemyLog'>{data.msg}</div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,8 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
+import { CombatContext } from "../contexts/CombatContext";
+import { EnemyContext } from "../contexts/EnemyContext";
 
 function CharacterSheet() {
   const { character, setCharacter } = useContext(CharacterContext);
+  const { setEnemy } = useContext(EnemyContext);
+  const { setCombat } = useContext(CombatContext);
+  const initialMount = useRef(true);
 
   const calcHp = () => {
     console.log("hp");
@@ -42,7 +47,28 @@ function CharacterSheet() {
     }
   };
 
+  const dummyEnemy = () => {
+    setEnemy({
+      name: "",
+      lvl: 0,
+      hp: 0,
+      maxHp: 0,
+    });
+  };
+
+  const dummyCombat = () => {
+    setCombat({
+      earnedXp: 0,
+      log: [],
+    });
+  };
+
   useEffect(() => {
+    if (initialMount.current) {
+      initialMount.current = false;
+      dummyEnemy();
+      dummyCombat();
+    }
     console.log("mounted");
     calcHp();
     calcNextLvl();
