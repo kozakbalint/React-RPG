@@ -14,61 +14,64 @@ function Adventure() {
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-  useEffect(async () => {
-    if (initialMount.current) {
-      initialMount.current = false;
-      initCombat();
-      generateEnemy();
-    } else {
-      if (character.hp <= 0 || enemy.hp <= 0) {
-        if (character.hp > 0) {
-          setCombat((currentCombat) => ({
-            ...currentCombat,
-            earnedXp: Math.floor(Math.random() * enemy.lvl * 1000),
-          }));
-        } else {
-          setCombat((currentCombat) => ({
-            ...currentCombat,
-            earnedXp: 0,
-          }));
-        }
-        history("/combatsummary");
+  useEffect(() => {
+    Combat();
+    async function Combat() {
+      if (initialMount.current) {
+        initialMount.current = false;
+        initCombat();
+        generateEnemy();
       } else {
-        let enemyDmg = calcDmg(false);
-        let playerDmg = calcDmg(true);
-        await delay(250);
-        if (playersTurn) {
-          setPlayersTurn(!playersTurn);
-          setCombat((currentCombat) => ({
-            ...currentCombat,
-            log: [
-              ...currentCombat.log,
-              {
-                isPalyer: true,
-                msg: character.username + " " + playerDmg + "-at sebbzett.",
-              },
-            ],
-          }));
-          setEnemy((currentEnemy) => ({
-            ...currentEnemy,
-            hp: currentEnemy.hp - playerDmg,
-          }));
+        if (character.hp <= 0 || enemy.hp <= 0) {
+          if (character.hp > 0) {
+            setCombat((currentCombat) => ({
+              ...currentCombat,
+              earnedXp: Math.floor(Math.random() * enemy.lvl * 1000),
+            }));
+          } else {
+            setCombat((currentCombat) => ({
+              ...currentCombat,
+              earnedXp: 0,
+            }));
+          }
+          history("/combatsummary");
         } else {
-          setPlayersTurn(!playersTurn);
-          setCombat((currentCombat) => ({
-            ...currentCombat,
-            log: [
-              ...currentCombat.log,
-              {
-                isPalyer: false,
-                msg: enemy.name + " " + enemyDmg + "-at sebbzett.",
-              },
-            ],
-          }));
-          setCharacter((currentCharacter) => ({
-            ...currentCharacter,
-            hp: currentCharacter.hp - enemyDmg,
-          }));
+          let enemyDmg = calcDmg(false);
+          let playerDmg = calcDmg(true);
+          await delay(250);
+          if (playersTurn) {
+            setPlayersTurn(!playersTurn);
+            setCombat((currentCombat) => ({
+              ...currentCombat,
+              log: [
+                ...currentCombat.log,
+                {
+                  isPalyer: true,
+                  msg: character.username + " " + playerDmg + "-at sebbzett.",
+                },
+              ],
+            }));
+            setEnemy((currentEnemy) => ({
+              ...currentEnemy,
+              hp: currentEnemy.hp - playerDmg,
+            }));
+          } else {
+            setPlayersTurn(!playersTurn);
+            setCombat((currentCombat) => ({
+              ...currentCombat,
+              log: [
+                ...currentCombat.log,
+                {
+                  isPalyer: false,
+                  msg: enemy.name + " " + enemyDmg + "-at sebbzett.",
+                },
+              ],
+            }));
+            setCharacter((currentCharacter) => ({
+              ...currentCharacter,
+              hp: currentCharacter.hp - enemyDmg,
+            }));
+          }
         }
       }
     }

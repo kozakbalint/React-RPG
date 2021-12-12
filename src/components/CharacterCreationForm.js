@@ -115,7 +115,6 @@ function CharacterCreationForm() {
                 Create
               </button>
             </div>
-            <pre>{JSON.stringify(character, null, 2)}</pre>
           </Form>
         )}
       </Formik>

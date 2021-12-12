@@ -6,8 +6,8 @@ import { EnemyContext } from "../contexts/EnemyContext";
 
 function CombatSummary() {
   const { character, setCharacter } = useContext(CharacterContext);
-  const { enemy, setEnemy } = useContext(EnemyContext);
-  const { combat, setCombat } = useContext(CombatContext);
+  const { enemy } = useContext(EnemyContext);
+  const { combat } = useContext(CombatContext);
   const history = useNavigate();
   return (
     <div className=''>

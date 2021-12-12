@@ -4,26 +4,26 @@
 
 @layer components{
     table {
-        @apply text-center mx-auto w-full p-3 my-4;
+        @apply table-fixed text-center mx-auto w-full p-3 my-4;
     }
     table th {
         @apply text-xl;
     }
     
     table tr td{
-        @apply p-3 max-w-sm;
+        @apply p-3 max-w-sm align-top;
     }
 
     .playerLog {
-        @apply text-left text-green-500
+        @apply text-left text-green-500 h-6 border-green-500 border-solid rounded-xl
     }
 
     .enemyLog {
-        @apply text-right text-red-500
+        @apply text-right text-red-500 h-6 border-red-500 border-solid rounded-xl
     }
     
-    .background-image {
-        @apply bg-hero-pattern m-0 bg-gray-800 text-green-500;
+    html, body {
+        @apply bg-gray-800 text-green-500;
     }
 
     .navbar-icon {

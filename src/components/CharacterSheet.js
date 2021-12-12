@@ -166,6 +166,7 @@ function CharacterSheet() {
             <td>
               <button
                 className='button'
+                disabled={true}
                 onClick={() => {
                   if (character.availableAbilityScores !== 0) {
                     setCharacter((currentCharacter) => ({
@@ -212,6 +213,7 @@ function CharacterSheet() {
             <td>
               <button
                 className='button'
+                disabled={true}
                 onClick={() => {
                   if (character.availableAbilityScores !== 0) {
                     setCharacter((currentCharacter) => ({
@@ -235,6 +237,7 @@ function CharacterSheet() {
             <td>
               <button
                 className='button'
+                disabled={true}
                 onClick={() => {
                   if (character.availableAbilityScores !== 0) {
                     setCharacter((currentCharacter) => ({
@@ -258,6 +261,7 @@ function CharacterSheet() {
             <td>
               <button
                 className='button'
+                disabled={true}
                 onClick={() => {
                   if (character.availableAbilityScores !== 0) {
                     setCharacter((currentCharacter) => ({
@@ -277,7 +281,6 @@ function CharacterSheet() {
           </tr>
         </tbody>
       </table>
-      <pre>{JSON.stringify(character, null, 2)}</pre>
     </div>
   );
 }
